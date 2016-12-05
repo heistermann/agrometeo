@@ -9,13 +9,18 @@ library(extRemes)
 #    Setze Arbeitsverzeichnis via 
 #    Session>Set Working Directory>To Source File Location
 
+# ACHTUNG:
+#    Setze Start- und Enddatum für die Analyse
+startDate = "1961-01-01"
+endDate = "1990-12-31"
+
+
 # Daten lesen
 tmp = read.table("precip.csv", header=TRUE, 
                  stringsAsFactors=FALSE, sep=";")
 
 # Daten zu einheitlicher Zeitreihe (Datum - Niederschlag) umformen
-date = seq(from=as.Date("1961-01-01"), to=as.Date("2010-12-31"),
-            by="days")
+date = seq(from=as.Date(startDate), to=as.Date(endDate), by="days")
 df = data.frame(date=date, prec=rep(NA, length(date)))
 year=strftime(date, format="X%Y")
 month=as.numeric(strftime(date, format="%m"))
@@ -175,7 +180,7 @@ for (i in 1:nrow(dry.spells)) {
 }
 
 # Monatsmittelwert der Zahl von Tagen in Trockenperioden
-n.years = max(df$year) - min(df$year)
+n.years = max(df$year) - min(df$year) + 1
 avg.n.drydays = n.drydays / n.years
 plot(1:12, avg.n.drydays, type="b", 
      xlab="Monat", ylab="Zahl der Tage",
